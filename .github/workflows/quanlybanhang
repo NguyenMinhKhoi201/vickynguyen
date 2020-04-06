@@ -1,0 +1,241 @@
+#include <stdio.h>
+#include <conio.h>
+
+struct QLBH
+{
+	char maHang[10];
+	char tenHang[50];
+	char donVi[5];
+	int soLuong;
+	int donGia;
+	int thanhTien;
+	float chietKhau;
+	float doanhThu;
+};
+void Menu();
+void NhapThongTinSanPham(QLBH &bh);
+void NhapThongTinBanHang(QLBH a[], int n);
+void InMatHang(QLBH bh);
+void InLietKeChiTietBanHang(QLBH a[],int n);
+int HaiMatHangSL(QLBH a[], int n);
+int HaiMatHangDoanhThu(QLBH a[], int n);
+void SapXep(QLBH a[], int n);
+
+int main()
+{
+	int n,choice;
+	do
+	{
+		printf("Nhap so luong mat hang muon ban:\n");
+		scanf("%d",&n);
+	}while( n<1 || n > 100);
+	
+	QLBH a[100];
+	
+	do
+	{
+		Menu();
+		printf("Moi ban chon chuc nang !! \n");
+		scanf("%d",&choice);
+		switch (choice)
+		{
+			case 1: NhapThongTinBanHang(a,n);
+				break;
+			case 2: InLietKeChiTietBanHang(a,n);
+				break;
+			case 3: HaiMatHangSL(a,n);
+					break;
+			case 4: HaiMatHangDoanhThu(a,n);
+					break;
+			case 5: SapXep(a,n);
+					break;
+			case 0: break;
+			default: printf("Khong co chuc nang");
+					 printf("Moi chon lai");
+		}
+	}while( n != 0);
+}
+
+void Menu()
+{
+	printf("\nMENU\n");
+	printf("1. Nhap thong tin ban hang:\n");
+	printf("2. In liet ke chi tiet ban hang:\n");
+	printf("3. In ra 2 mat hang co so luong ban lon nhat:\n");
+	printf("4. In ra 2 mat hang co doanh thu ban nho nhat:\n");
+	printf("5. Sap xep thu tu giam dan theo doanh thu ban hang:\n");
+	printf("0. Thoat\n");
+}
+void NhapThongTinSanPham(QLBH &bh)
+{
+	fflush(stdin);
+	printf("Nhap ma hang:\n");
+	gets(bh.maHang);
+	printf("Nhap ten hang:\n");
+	gets(bh.tenHang);
+	printf("Nhap don vi:\n");
+	gets(bh.donVi);
+	printf("Nhap so luong:\n");
+	scanf("%d",&bh.soLuong);
+	printf("Nhap don gia:\n");
+	scanf("%d",&bh.donGia);
+	bh.thanhTien = bh.soLuong * bh.donGia;
+	bh.chietKhau = 5* bh.thanhTien/100;
+	bh.doanhThu = bh.thanhTien - bh.chietKhau;
+	printf("================================\n");
+}
+
+void NhapThongTinBanHang(QLBH a[],int n)
+{
+	for (int i = 0 ; i < n ; i++)
+	{
+	NhapThongTinSanPham(a[i]);
+	}
+}
+
+void InMatHang(QLBH bh)
+{
+	printf("\nTen ma hang %s\n",bh.maHang);
+	printf("Ten hang %s\n",bh.tenHang);
+	printf("Don vi ban %s\n",bh.donVi);
+	printf("So luong ban %d\n",bh.soLuong);
+	printf("Don gia ban %d\n",bh.donGia);
+	printf("Thanh tien la %d\n",bh.thanhTien);
+	printf("Chiet khau la %.0f\n",bh.chietKhau);
+	printf("Doanh thu la %.0f\n",bh.doanhThu);
+}
+
+void InLietKeChiTietBanHang(QLBH a[],int n)
+{
+	for (int i = 0 ; i < n ; i++)
+	{
+		printf("\nChi tiet mat hang %d: ",i+1);
+		InMatHang(a[i]);
+		
+	}
+}
+int HaiMatHangSL(QLBH a[], int n)
+{
+	int fMax,sMax;
+	if (a[0].soLuong > a[1].soLuong)
+	{
+		fMax = a[0].soLuong;
+		sMax = a[1].soLuong;
+	}
+	else 
+	{
+		fMax = a[1].soLuong;
+		sMax = a[0].soLuong;
+	}
+	for ( int i = 2 ; i < n ; i++)
+	{
+		if ( a[i].soLuong > fMax)
+		{
+			sMax = fMax;
+			fMax = a[i].soLuong;
+		}
+		else if (a[i].soLuong > sMax)
+		{
+			sMax = a[i].soLuong;
+		}
+	}
+	
+	for ( int i = 0 ; i < n ; i++)
+	{
+		if ( a[i].soLuong == fMax)
+		{
+			printf("Thong tin cua mat hang co so luong lon nhat:\n");
+			InMatHang(a[i]);
+		}
+		else
+		{
+			continue;
+		}
+		
+	}
+	
+	for (int i = 0 ; i < n ; i++)
+	{
+		if ( a[i].soLuong == sMax)
+		{
+			printf("Thong tin cua mat hang co so luong lon thu 2:\n");
+			InMatHang(a[i]);
+		}else{
+			continue;
+		}
+	}
+}
+
+int HaiMatHangDoanhThu(QLBH a[], int n)
+{
+	int fMin,sMin,temp;
+	if (a[0].doanhThu > a[1].doanhThu)
+	{
+		sMin = a[0].doanhThu;
+		fMin = a[1].doanhThu;
+	}
+	else 
+	{
+		sMin = a[1].doanhThu;
+		fMin = a[0].doanhThu;
+	}
+	for ( int i = 2 ; i < n ; i++)
+	{
+		if ( a[i].doanhThu < fMin)
+		{
+			temp = fMin;
+			fMin = a[i].doanhThu;
+			sMin = temp;	
+			
+		}
+		else if (a[i].doanhThu < sMin)
+		{
+			sMin = a[i].doanhThu;
+		}
+	}
+	
+	for ( int i = 0 ; i < n ; i++)
+	{
+		if ( a[i].doanhThu == fMin)
+		{
+			printf("Thong tin cua mat hang co doanh thu nho nhat:\n");
+			InMatHang(a[i]);
+		}
+		else
+		{
+			continue;
+		}
+		
+	}
+	
+	for (int i = 0 ; i < n ; i++)
+	{
+		if ( a[i].doanhThu == sMin)
+		{
+			printf("Thong tin cua mat hang co doanh thu nho thu 2:\n");
+			InMatHang(a[i]);
+		}else
+		{
+			
+			continue;
+		}
+	}
+}
+
+void SapXep(QLBH a[], int n)
+{
+	QLBH temp;
+	for (int i = 0 ; i < n ; i++)
+	{
+		for ( int j = i + 1 ; j < n ; j++)
+		{
+			if (a[i].doanhThu < a[j].doanhThu)
+			{
+				temp = a[i];
+				a[i] = a[j];
+				a[j]= temp;
+			}
+		}
+	}
+	InLietKeChiTietBanHang(a,n);
+}
